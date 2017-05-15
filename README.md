@@ -1,25 +1,14 @@
 # cucumber-slack-notifier-plugin
-Jenkins plugin to push summarised Cucumber reports to Slack
+Jenkins plugin to push summarised Cucumber reports to Slack, which is customized from https://github.com/jenkinsci/cucumber-slack-notifier-plugin.
 
-[![Build Status](https://travis-ci.org/garethjevans/cucumber-slack-notifier-plugin.svg)](https://travis-ci.org/garethjevans/cucumber-slack-notifier-plugin)
+## New feature
+Compatible with Cucumber reports plugin, and also post execution duration and node name in Slack.
 
 ## Installation
 
-Coming Soon...
+```bash
+mvn clean install
+```
 
 ## Configuration
-
-The following options are available:
-
-### Global Configuration
-
-* webHookEndpoint
-
-TODO: add a screen shot here 
-
-### Build Configuration
-
-* channel - slack channel to post result to
-* json - json file containing the cucumber results, e.g. target/cucumber.json
-
-TODO: add a screen shot here 
+https://www.youtube.com/watch?v=jvdi3dtHac8
