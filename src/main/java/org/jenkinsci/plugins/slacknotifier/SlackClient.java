@@ -41,6 +41,13 @@ public class SlackClient {
 		postToSlack(json);
 	}
 
+	public void postToSlack(JsonElement results, final String jobName, final int buildNumber, final String duration, final String nodeName, final String extra) {
+		LOG.info("Publishing advanced test report to slack channel: " + channel);
+		CucumberResult result = results == null ? dummyResults() : processResults(results);
+		String json = result.toSlackMessage(jobName, buildNumber, duration, nodeName, channel, jenkinsUrl, extra);
+		postToSlack(json);
+	}
+
 	private CucumberResult dummyResults() {
 		return new CucumberResult(Arrays.asList(new FeatureResult("Dummy Test", 100)),1,100);
 	}

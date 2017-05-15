@@ -42,11 +42,30 @@ public class CucumberResult {
 		json.add("fields", getFields(jobName, buildNumber, jenkinsUrl));
 
 		if (getPassPercentage() == 100) {
-			addColourAndIcon(json, "good", ":thumbsup:");
+			addColourAndIcon(json, "good", ":eyes:");
 		} else if (getPassPercentage() >= 98) {
-			addColourAndIcon(json, "warning", ":hand:");
+			addColourAndIcon(json, "warning", ":eyes:");
 		} else {
-			addColourAndIcon(json, "danger", ":thumbsdown:");
+			addColourAndIcon(json, "danger", ":eyes:");
+		}
+
+		json.addProperty("username", jobName);
+		return json.toString();
+	}
+
+	public String toSlackMessage(final String jobName,
+								 final int buildNumber, final String duration, final String nodeName, final String channel, final String jenkinsUrl, final String extra) {
+		final JsonObject json = new JsonObject();
+		json.addProperty("channel", "#" + channel);
+		addCaption(json, buildNumber, jobName, duration, nodeName, jenkinsUrl, extra);
+		json.add("fields", getFields(jobName, buildNumber, jenkinsUrl));
+
+		if (getPassPercentage() == 100) {
+			addColourAndIcon(json, "good", ":eyes:");
+		} else if (getPassPercentage() >= 98) {
+			addColourAndIcon(json, "warning", ":eyes:");
+		} else {
+			addColourAndIcon(json, "danger", ":eyes:");
 		}
 
 		json.addProperty("username", jobName);
@@ -83,9 +102,36 @@ public class CucumberResult {
 		s.append(">");
 		return s.toString();
 	}
-	
+
+	public String toHeader(final String jobName, final int buildNumber, final String duration, final String nodeName, final String jenkinsUrl, final String extra) {
+		StringBuilder s = new StringBuilder();
+		if (StringUtils.isNotEmpty(extra)) {
+			s.append(extra);
+		}
+		s.append("Features: ");
+		s.append(getTotalFeatures());
+		s.append(", Scenarios: ");
+		s.append(getTotalScenarios());
+		s.append(", Build: <");
+		s.append(getJenkinsHyperlink(jenkinsUrl, jobName, buildNumber));
+		s.append("cucumber-html-reports/|");
+		s.append(buildNumber);
+		s.append(">");
+		s.append("\n");
+		s.append("Duration: ");
+		s.append(duration);
+		s.append("\n");
+		s.append("Node: ");
+		s.append(nodeName);
+		return s.toString();
+	}
+
 	private void addCaption(final JsonObject json, final int buildNumber, final String jobName, final String jenkinsUrl, final String extra) {
 		json.addProperty("pretext", toHeader(jobName, buildNumber, jenkinsUrl, extra));
+	}
+
+	private void addCaption(final JsonObject json, final int buildNumber, final String jobName, final String duration, final String nodeName, final String jenkinsUrl, final String extra) {
+		json.addProperty("pretext", toHeader(jobName, buildNumber, duration, nodeName, jenkinsUrl, extra));
 	}
 	
 	private void addColourAndIcon(JsonObject json, String good, String value) {

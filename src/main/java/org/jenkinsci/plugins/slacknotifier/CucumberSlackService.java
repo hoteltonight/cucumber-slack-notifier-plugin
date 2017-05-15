@@ -30,7 +30,8 @@ public class CucumberSlackService {
 
 		JsonElement jsonElement = getResultFileAsJsonElement(workspace, json);
 		SlackClient client = new SlackClient(webhookUrl, jenkinsUrl, channel, hideSuccessfulResults);
-		client.postToSlack(jsonElement, build.getParent().getDisplayName(), build.getNumber(), extra);
+		//client.postToSlack(jsonElement, build.getParent().getDisplayName(), build.getNumber(), extra);
+		client.postToSlack(jsonElement, build.getParent().getDisplayName(), build.getNumber(), build.getDurationString(), build.getExecutor().getOwner().getNode().getDisplayName(), extra);
 	}
 
 	private JsonElement getResultFileAsJsonElement(FilePath workspace, String json) {

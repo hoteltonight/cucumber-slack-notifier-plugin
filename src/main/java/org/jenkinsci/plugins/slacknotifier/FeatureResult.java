@@ -18,7 +18,8 @@ public class FeatureResult {
 	}
 	
 	public String getFeatureUri() {
-		return this.name.replace(".feature", "-feature") + ".html";
+		String cucumberReportPluginFileName = this.name.replace("features/", "report-feature_features-");
+		return cucumberReportPluginFileName.replace(".feature", "-feature") + ".html";
 	}
 	
 	public String getDisplayName() {
